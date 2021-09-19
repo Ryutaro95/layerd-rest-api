@@ -1,7 +1,8 @@
 mod presentation;
 mod infrastructure;
 
+use presentation as server;
+
 fn main() -> std::io::Result<()> {
-    // presentation::run()
-    presentation::server::run()
+    server::run()
 }
