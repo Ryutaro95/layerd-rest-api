@@ -1,0 +1,20 @@
+FROM rust:1.55.0 AS builder
+
+WORKDIR /post-api
+
+COPY Cargo.toml Cargo.toml
+
+RUN mkdir src
+RUN echo "fn main(){}" > src/main.rs
+RUN cargo build --release
+
+RUN cargo install diesel_cli
+
+COPY ./src ./src
+
+RUN rm -f target/release/teps/post-api*
+RUN cargo build --release
+
+FROM debian:10.4
+COPY --from=builder /post-api/target/release/post-api /usr/local/bin/post-api
+CMD ["post-api"]
